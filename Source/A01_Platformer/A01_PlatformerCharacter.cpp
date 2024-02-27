@@ -104,7 +104,7 @@ void AA01_PlatformerCharacter::CreateDefaultItems()
 
 auto AA01_PlatformerCharacter::GetItemAtIndex(uint32 Index) -> UItem*
 {
-	if (Index < 0 || InventoryItems.Num() <= Index)
+	if (Index < 0u || static_cast<uint32>(InventoryItems.Num()) <= Index)
 	{
 		return nullptr;
 	}
@@ -114,13 +114,13 @@ auto AA01_PlatformerCharacter::GetItemAtIndex(uint32 Index) -> UItem*
 
 auto AA01_PlatformerCharacter::DeleteItemAtIndex(uint32 Index) -> void
 {
-	if (Index < 0 || InventoryItems.Num() <= Index)
+	if (Index < 0u || static_cast<uint32>(InventoryItems.Num()) <= Index)
 	{
 		return;
 	}
 
 	InventoryItems.RemoveAt(Index);
-	InventoryWidget->RefreshInventory();
+	InventoryWidget->RefreshInventory(InventoryItems);
 }
 
 

@@ -2,13 +2,14 @@
 
 #pragma once
 
+#include "Item.h"
+
 #include "CoreMinimal.h"
 #include "InventoryWidget.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "A01_PlatformerCharacter.generated.h"
 
-#include "Item.h"
 
 class USpringArmComponent;
 class UCameraComponent;
