@@ -53,6 +53,9 @@ class AA01_PlatformerCharacter : public ACharacter
 	UInputAction* InventoryAction;
 
 	bool bIsInvetoryOpen;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Inventory", meta=(AllowPrivateAccess))
+	class UInventoryActorComponent* InventoryComponent;
 	
 public:
 	AA01_PlatformerCharacter();
@@ -76,10 +79,6 @@ protected:
 	// To add mapping context
 	virtual void BeginPlay();
 
-	auto CreateDefaultItems() -> void;
-
-	TArray<UItem*> InventoryItems;
-
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -91,5 +90,7 @@ public:
 	auto DeleteItemAtIndex(uint32 Index) -> void;
 
 	auto ToggleInventory() -> void;
+
+	auto AddItem(UItem* NewItem) -> bool;
 };
 

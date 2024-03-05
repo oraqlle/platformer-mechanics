@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "InventoryActorComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -55,6 +56,7 @@ AA01_PlatformerCharacter::AA01_PlatformerCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 
 	bIsInvetoryOpen = false;
+	InventoryComponent = CreateDefaultSubobject<UInventoryActorComponent>(TEXT("Inventory Component"));
 }
 
 void AA01_PlatformerCharacter::BeginPlay()
@@ -72,55 +74,18 @@ void AA01_PlatformerCharacter::BeginPlay()
 
 		InventoryWidget = CreateWidget<UInventoryWidget>(PlayerController, InventoryWidgetClass);
 		InventoryWidget->Owner = this;
-
-		CreateDefaultItems();
 	}
-}
-
-void AA01_PlatformerCharacter::CreateDefaultItems()
-{
-	UItem* TempItem = nullptr;
-	
-	TempItem = NewObject<UItem>();
-	TempItem->SetName("Health");
-	TempItem->SetDescription("A potion to recover lost health");
-	InventoryItems.Add(TempItem);
-	
-	TempItem = NewObject<UItem>();
-	TempItem->SetDescription("A mysterious rune. Said to make you faster for 10 seconds");
-	TempItem->SetName("Speed");
-	InventoryItems.Add(TempItem);
-	
-	TempItem = NewObject<UItem>();
-	TempItem->SetDescription("A mysterious rune. Said to make you double jump for 10 seconds");
-	TempItem->SetName("Jump");
-	InventoryItems.Add(TempItem);
-	
-	TempItem = NewObject<UItem>();
-	TempItem->SetDescription("A mysterious rune. Said to freeze time around you for 10 second");
-	TempItem->SetName("Freeze");
-	InventoryItems.Add(TempItem);
 }
 
 auto AA01_PlatformerCharacter::GetItemAtIndex(uint32 Index) -> UItem*
 {
-	if (Index < 0u || static_cast<uint32>(InventoryItems.Num()) <= Index)
-	{
-		return nullptr;
-	}
-
-	return InventoryItems[Index];
+	return InventoryComponent->GetItemAtIndex(Index);
 }
 
 auto AA01_PlatformerCharacter::DeleteItemAtIndex(uint32 Index) -> void
 {
-	if (Index < 0u || static_cast<uint32>(InventoryItems.Num()) <= Index)
-	{
-		return;
-	}
-
-	InventoryItems.RemoveAt(Index);
-	InventoryWidget->RefreshInventory(InventoryItems);
+	InventoryComponent->DeleteItemAtIndex(Index);
+	InventoryWidget->RefreshInventory(InventoryComponent->GetAllItems());
 }
 
 auto AA01_PlatformerCharacter::ToggleInventory() -> void
@@ -136,12 +101,17 @@ auto AA01_PlatformerCharacter::ToggleInventory() -> void
 		PlayerController->bShowMouseCursor = false;
 	} else {
 		InventoryWidget->AddToViewport();
-		InventoryWidget->RefreshInventory(InventoryItems);
+		InventoryWidget->RefreshInventory(InventoryComponent->GetAllItems());
 		PlayerController->SetInputMode(FInputModeGameAndUI());
 		PlayerController->bShowMouseCursor = true;
 	}
 
 	bIsInvetoryOpen = !bIsInvetoryOpen;
+}
+
+auto AA01_PlatformerCharacter::AddItem(UItem* NewItem) -> bool
+{
+	return InventoryComponent->AddItem(NewItem);
 }
 
 
