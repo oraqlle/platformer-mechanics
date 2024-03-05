@@ -53,6 +53,8 @@ AA01_PlatformerCharacter::AA01_PlatformerCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	bIsInvetoryOpen = false;
 }
 
 void AA01_PlatformerCharacter::BeginPlay()
@@ -69,7 +71,6 @@ void AA01_PlatformerCharacter::BeginPlay()
 		}
 
 		InventoryWidget = CreateWidget<UInventoryWidget>(PlayerController, InventoryWidgetClass);
-		InventoryWidget->AddToViewport();
 		InventoryWidget->Owner = this;
 
 		CreateDefaultItems();
@@ -99,7 +100,6 @@ void AA01_PlatformerCharacter::CreateDefaultItems()
 	TempItem->SetDescription("A mysterious rune. Said to freeze time around you for 10 second");
 	TempItem->SetName("Freeze");
 	InventoryItems.Add(TempItem);
-	InventoryWidget->RefreshInventory(InventoryItems);
 }
 
 auto AA01_PlatformerCharacter::GetItemAtIndex(uint32 Index) -> UItem*
@@ -123,6 +123,27 @@ auto AA01_PlatformerCharacter::DeleteItemAtIndex(uint32 Index) -> void
 	InventoryWidget->RefreshInventory(InventoryItems);
 }
 
+auto AA01_PlatformerCharacter::ToggleInventory() -> void
+{
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+
+	if (!PlayerController) { return; }
+
+	if (bIsInvetoryOpen)
+	{
+		PlayerController->SetInputMode(FInputModeGameOnly());
+		InventoryWidget->RemoveFromParent();
+		PlayerController->bShowMouseCursor = false;
+	} else {
+		InventoryWidget->AddToViewport();
+		InventoryWidget->RefreshInventory(InventoryItems);
+		PlayerController->SetInputMode(FInputModeGameAndUI());
+		PlayerController->bShowMouseCursor = true;
+	}
+
+	bIsInvetoryOpen = !bIsInvetoryOpen;
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // Input
@@ -143,6 +164,9 @@ void AA01_PlatformerCharacter::SetupPlayerInputComponent(UInputComponent* Player
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AA01_PlatformerCharacter::Look);
+
+		// Opening/Closing Inventory
+		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &AA01_PlatformerCharacter::ToggleInventory);
 	}
 	else
 	{

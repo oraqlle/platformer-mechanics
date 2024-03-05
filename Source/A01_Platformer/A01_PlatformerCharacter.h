@@ -47,7 +47,12 @@ class AA01_PlatformerCharacter : public ACharacter
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
+	
+	/** Open/Close Inventory Input Action */
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* InventoryAction;
 
+	bool bIsInvetoryOpen;
 	
 public:
 	AA01_PlatformerCharacter();
@@ -84,5 +89,7 @@ public:
 	auto GetItemAtIndex(uint32 Index) -> UItem*;
 
 	auto DeleteItemAtIndex(uint32 Index) -> void;
+
+	auto ToggleInventory() -> void;
 };
 
