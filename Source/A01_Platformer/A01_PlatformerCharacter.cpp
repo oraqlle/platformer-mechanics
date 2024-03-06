@@ -114,6 +114,12 @@ auto AA01_PlatformerCharacter::AddItem(UItem* NewItem) -> bool
 	return InventoryComponent->AddItem(NewItem);
 }
 
+auto AA01_PlatformerCharacter::UseItem(int32 Index) -> void
+{
+	InventoryComponent->UseItemAtIndex(Index, this);
+	InventoryWidget->RefreshInventory(InventoryComponent->GetAllItems());
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // Input

@@ -8,7 +8,7 @@
 
 USpeedBoostItem::USpeedBoostItem()
 {
-	ItemName = "Speed Boost";
+	ItemName = "Speed";
 	ItemDescription = "A mysterious rune. Said to make you faster";
 	SpeedBoostAmount = 100.f;
 	SpeedBoostDuration = 1.f;

@@ -65,7 +65,12 @@ auto UInventoryActorComponent::GetItemAtIndex(int32 Index) -> UItem*
 
 auto UInventoryActorComponent::UseItemAtIndex(int32 Index, AA01_PlatformerCharacter* Character) -> bool
 {
-	return false;
+	if (Index < 0 || InventoryItems.Num() <= Index) { return false; }
+
+	auto* UsedItem = InventoryItems[Index];
+	UsedItem->UseItem(Character);
+	InventoryItems.RemoveAt(Index);
+	return true;
 }
 
 auto UInventoryActorComponent::DeleteItemAtIndex(int32 Index) -> bool

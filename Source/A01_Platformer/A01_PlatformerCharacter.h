@@ -92,5 +92,7 @@ public:
 	auto ToggleInventory() -> void;
 
 	auto AddItem(UItem* NewItem) -> bool;
+
+	auto UseItem(int32 Index) -> void;
 };
 
