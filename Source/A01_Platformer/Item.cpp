@@ -29,3 +29,8 @@ auto UItem::GetDescription() -> FString
 {
 	return ItemDescription;
 }
+
+void UItem::UseItem(AA01_PlatformerCharacter* Character)
+{
+	return;
+}

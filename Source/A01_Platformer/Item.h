@@ -6,10 +6,12 @@
 #include "UObject/NoExportTypes.h"
 #include "Item.generated.h"
 
+class AA01_PlatformerCharacter;
+
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable, EditInlineNew, DefaultToInstanced)
 class A01_PLATFORMER_API UItem : public UObject
 {
 	GENERATED_BODY()
@@ -23,7 +25,13 @@ public:
 	auto GetName() -> FString;
 	auto GetDescription() -> FString;
 
+	virtual void UseItem(AA01_PlatformerCharacter* Character);
+	
 protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString ItemName;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString ItemDescription;
 };
