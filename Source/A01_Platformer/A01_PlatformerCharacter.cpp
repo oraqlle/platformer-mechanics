@@ -11,6 +11,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "InventoryActorComponent.h"
+#include "SprintActorComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -57,6 +58,7 @@ AA01_PlatformerCharacter::AA01_PlatformerCharacter()
 
 	bIsInvetoryOpen = false;
 	InventoryComponent = CreateDefaultSubobject<UInventoryActorComponent>(TEXT("Inventory Component"));
+	SprintComponent = CreateDefaultSubobject<USprintActorComponent>(TEXT("Sprint Component"));
 }
 
 void AA01_PlatformerCharacter::BeginPlay()
@@ -109,6 +111,15 @@ auto AA01_PlatformerCharacter::ToggleInventory() -> void
 	bIsInvetoryOpen = !bIsInvetoryOpen;
 }
 
+auto AA01_PlatformerCharacter::ActivateSprint() -> void
+{
+	if (!bIsSprinting)
+	{
+		SprintComponent->ActivateSprint(this);
+		bIsSprinting = true;
+	}
+}
+
 auto AA01_PlatformerCharacter::AddItem(UItem* NewItem) -> bool
 {
 	return InventoryComponent->AddItem(NewItem);
@@ -142,7 +153,10 @@ void AA01_PlatformerCharacter::SetupPlayerInputComponent(UInputComponent* Player
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AA01_PlatformerCharacter::Look);
 
 		// Opening/Closing Inventory
-		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &AA01_PlatformerCharacter::ToggleInventory);
+		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Triggered, this, &AA01_PlatformerCharacter::ToggleInventory);
+
+		// Sprinting (Hold)
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AA01_PlatformerCharacter::ActivateSprint);
 	}
 	else
 	{

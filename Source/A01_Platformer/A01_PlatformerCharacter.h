@@ -56,6 +56,14 @@ class AA01_PlatformerCharacter : public ACharacter
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Inventory", meta=(AllowPrivateAccess))
 	class UInventoryActorComponent* InventoryComponent;
+
+	UPROPERTY(EditAnywhere, Category= Input)
+	UInputAction* SprintAction;
+
+	bool bIsSprinting;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Sprinting", meta=(AllowPrivateAccess))
+	class USprintActorComponent* SprintComponent;
 	
 public:
 	AA01_PlatformerCharacter();
@@ -89,10 +97,12 @@ public:
 
 	auto DeleteItemAtIndex(uint32 Index) -> void;
 
-	auto ToggleInventory() -> void;
-
 	auto AddItem(UItem* NewItem) -> bool;
 
 	auto UseItem(int32 Index) -> void;
+
+	auto ToggleInventory() -> void;
+
+	auto ActivateSprint() -> void;
 };
 
