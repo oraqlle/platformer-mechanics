@@ -57,6 +57,8 @@ AA01_PlatformerCharacter::AA01_PlatformerCharacter()
 
 	bIsInvetoryOpen = false;
 	InventoryComponent = CreateDefaultSubobject<UInventoryActorComponent>(TEXT("Inventory Component"));
+
+	CurrentHealth = 100.f;
 }
 
 void AA01_PlatformerCharacter::BeginPlay()
@@ -118,6 +120,17 @@ auto AA01_PlatformerCharacter::UseItem(int32 Index) -> void
 {
 	InventoryComponent->UseItemAtIndex(Index, this);
 	InventoryWidget->RefreshInventory(InventoryComponent->GetAllItems());
+}
+
+auto AA01_PlatformerCharacter::TakeDamage(float Damage) -> void
+{
+	CurrentHealth -= Damage;
+
+	if (CurrentHealth <= 0.f)
+	{
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
+		PlayerController->RestartLevel();
+	}
 }
 
 

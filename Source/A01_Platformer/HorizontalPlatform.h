@@ -16,6 +16,9 @@ class A01_PLATFORMER_API AHorizontalPlatform : public AActor
 	FVector PreviousStartLocation;
 
 public:
+	// Sets default values for this actor's properties
+	AHorizontalPlatform();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* PlatformMesh;
 
@@ -28,10 +31,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ToleranceThreshold;
 	
-public:	
-	// Sets default values for this actor's properties
-	AHorizontalPlatform();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

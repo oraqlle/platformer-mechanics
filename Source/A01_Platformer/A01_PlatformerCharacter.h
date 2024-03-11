@@ -64,6 +64,10 @@ public:
 	TSubclassOf<UInventoryWidget> InventoryWidgetClass;
 	
 	UInventoryWidget* InventoryWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float CurrentHealth;
+	
 protected:
 
 	/** Called for movement input */
@@ -94,5 +98,7 @@ public:
 	auto AddItem(UItem* NewItem) -> bool;
 
 	auto UseItem(int32 Index) -> void;
+
+	auto TakeDamage(float Damage) -> void;
 };
 
