@@ -113,11 +113,12 @@ auto AA01_PlatformerCharacter::ToggleInventory() -> void
 
 auto AA01_PlatformerCharacter::ActivateSprint() -> void
 {
-	if (!bIsSprinting)
-	{
-		SprintComponent->ActivateSprint(this);
-		bIsSprinting = true;
-	}
+	SprintComponent->ActivateSprint(this);
+}
+
+auto AA01_PlatformerCharacter::DeactivateSprint() -> void
+{
+	SprintComponent->DeactivateSprint(this);
 }
 
 auto AA01_PlatformerCharacter::AddItem(UItem* NewItem) -> bool
@@ -155,8 +156,11 @@ void AA01_PlatformerCharacter::SetupPlayerInputComponent(UInputComponent* Player
 		// Opening/Closing Inventory
 		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Triggered, this, &AA01_PlatformerCharacter::ToggleInventory);
 
-		// Sprinting (Hold)
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AA01_PlatformerCharacter::ActivateSprint);
+		// Sprinting (Initial Press)
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AA01_PlatformerCharacter::ActivateSprint);
+
+		// Sprinting (Release)
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AA01_PlatformerCharacter::DeactivateSprint);
 	}
 	else
 	{

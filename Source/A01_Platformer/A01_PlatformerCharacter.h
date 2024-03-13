@@ -104,5 +104,7 @@ public:
 	auto ToggleInventory() -> void;
 
 	auto ActivateSprint() -> void;
+
+	auto DeactivateSprint() -> void;
 };
 

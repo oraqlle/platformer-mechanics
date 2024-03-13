@@ -31,3 +31,11 @@ auto USprintActorComponent::ActivateSprint(AA01_PlatformerCharacter* AffectedCha
 		AffectedCharacter->GetCharacterMovement()->MaxWalkSpeed += SpeedIncrease;
 	}
 }
+
+auto USprintActorComponent::DeactivateSprint(AA01_PlatformerCharacter* AffectedCharacter) -> void
+{
+	if (AffectedCharacter)
+	{
+		AffectedCharacter->GetCharacterMovement()->MaxWalkSpeed -= SpeedIncrease;
+	}
+}

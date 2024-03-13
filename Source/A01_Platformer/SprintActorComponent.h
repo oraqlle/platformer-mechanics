@@ -27,4 +27,6 @@ protected:
 public:
 
 	auto ActivateSprint(AA01_PlatformerCharacter* AffectedCharacter) -> void;
+
+	auto DeactivateSprint(AA01_PlatformerCharacter* AffectedCharacter) -> void;
 };
