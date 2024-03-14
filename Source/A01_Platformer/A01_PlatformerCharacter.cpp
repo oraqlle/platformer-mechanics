@@ -12,6 +12,7 @@
 #include "InputActionValue.h"
 #include "InventoryActorComponent.h"
 #include "SprintActorComponent.h"
+#include "SubobjectDataFactory.h"
 #include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -113,12 +114,18 @@ auto AA01_PlatformerCharacter::ToggleInventory() -> void
 
 auto AA01_PlatformerCharacter::ActivateSprint() -> void
 {
-	SprintComponent->ActivateSprint(this);
+	if (!bPressedJump)
+	{
+		SprintComponent->ActivateSprint(this);
+	}
+
+	bIsSprinting = true;
 }
 
 auto AA01_PlatformerCharacter::DeactivateSprint() -> void
 {
 	SprintComponent->DeactivateSprint(this);
+	bIsSprinting = false;
 }
 
 auto AA01_PlatformerCharacter::AddItem(UItem* NewItem) -> bool
@@ -202,4 +209,26 @@ void AA01_PlatformerCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AA01_PlatformerCharacter::Jump()
+{
+	if (bIsSprinting)
+	{
+		SprintComponent->DeactivateSprint(this);		
+	}
+	
+	bPressedJump = true;
+	JumpKeyHoldTime = 0.0f;
+}
+
+void AA01_PlatformerCharacter::StopJumping()
+{
+	if (bIsSprinting)
+	{
+		SprintComponent->ActivateSprint(this);		
+	}
+	
+	bPressedJump = false;
+	ResetJumpState();
 }

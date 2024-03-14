@@ -80,6 +80,13 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
+	/**
+	 * Overrides for Jumping so Sprinting does not affect
+	 * Players movement speed during jump */
+	void Jump() override;
+
+	void StopJumping() override;
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

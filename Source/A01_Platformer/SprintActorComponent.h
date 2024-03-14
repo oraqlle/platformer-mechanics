@@ -16,9 +16,12 @@ class A01_PLATFORMER_API USprintActorComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	USprintActorComponent();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float WalkSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float SpeedIncrease;
+	float SprintSpeed;
 
 protected:
 	// Called when the game starts
