@@ -12,8 +12,7 @@ USprintActorComponent::USprintActorComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	WalkSpeed = 500.f;
-	SprintSpeed = 1500.f + WalkSpeed;
+	SprintIncrease = 500.f;
 }
 
 
@@ -29,7 +28,7 @@ auto USprintActorComponent::ActivateSprint(AA01_PlatformerCharacter* AffectedCha
 {
 	if (AffectedCharacter)
 	{
-		AffectedCharacter->GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+		AffectedCharacter->GetCharacterMovement()->MaxWalkSpeed += SprintIncrease;
 	}
 }
 
@@ -37,6 +36,6 @@ auto USprintActorComponent::DeactivateSprint(AA01_PlatformerCharacter* AffectedC
 {
 	if (AffectedCharacter)
 	{
-		AffectedCharacter->GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+		AffectedCharacter->GetCharacterMovement()->MaxWalkSpeed -= SprintIncrease;
 	}
 }

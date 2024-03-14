@@ -18,10 +18,7 @@ public:
 	USprintActorComponent();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float WalkSpeed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float SprintSpeed;
+	float SprintIncrease;
 
 protected:
 	// Called when the game starts
