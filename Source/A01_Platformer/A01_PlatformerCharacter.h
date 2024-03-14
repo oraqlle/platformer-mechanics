@@ -56,6 +56,14 @@ class AA01_PlatformerCharacter : public ACharacter
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Inventory", meta=(AllowPrivateAccess))
 	class UInventoryActorComponent* InventoryComponent;
+
+	UPROPERTY(EditAnywhere, Category= Input)
+	UInputAction* SprintAction;
+
+	bool bIsSprinting;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Sprinting", meta=(AllowPrivateAccess))
+	class USprintActorComponent* SprintComponent;
 	
 public:
 	AA01_PlatformerCharacter();
@@ -76,6 +84,13 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
+	/**
+	 * Overrides for Jumping so Sprinting does not affect
+	 * Players movement speed during jump */
+	void Jump() override;
+
+	void StopJumping() override;
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -93,11 +108,15 @@ public:
 
 	auto DeleteItemAtIndex(uint32 Index) -> void;
 
-	auto ToggleInventory() -> void;
-
 	auto AddItem(UItem* NewItem) -> bool;
 
 	auto UseItem(int32 Index) -> void;
+
+	auto ToggleInventory() -> void;
+
+	auto ActivateSprint() -> void;
+
+	auto DeactivateSprint() -> void;
 
 	auto TakeDamage(float Damage) -> void;
 };

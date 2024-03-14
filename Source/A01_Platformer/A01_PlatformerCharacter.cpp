@@ -11,6 +11,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "InventoryActorComponent.h"
+#include "SprintActorComponent.h"
+#include "SubobjectDataFactory.h"
 #include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -57,6 +59,9 @@ AA01_PlatformerCharacter::AA01_PlatformerCharacter()
 
 	bIsInvetoryOpen = false;
 	InventoryComponent = CreateDefaultSubobject<UInventoryActorComponent>(TEXT("Inventory Component"));
+
+	SprintComponent = CreateDefaultSubobject<USprintActorComponent>(TEXT("Sprint Component"));
+
 
 	CurrentHealth = 100.f;
 }
@@ -111,6 +116,22 @@ auto AA01_PlatformerCharacter::ToggleInventory() -> void
 	bIsInvetoryOpen = !bIsInvetoryOpen;
 }
 
+auto AA01_PlatformerCharacter::ActivateSprint() -> void
+{
+	if (!bPressedJump)
+	{
+		SprintComponent->ActivateSprint(this);
+	}
+
+	bIsSprinting = true;
+}
+
+auto AA01_PlatformerCharacter::DeactivateSprint() -> void
+{
+	SprintComponent->DeactivateSprint(this);
+	bIsSprinting = false;
+}
+
 auto AA01_PlatformerCharacter::AddItem(UItem* NewItem) -> bool
 {
 	return InventoryComponent->AddItem(NewItem);
@@ -155,7 +176,13 @@ void AA01_PlatformerCharacter::SetupPlayerInputComponent(UInputComponent* Player
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AA01_PlatformerCharacter::Look);
 
 		// Opening/Closing Inventory
-		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &AA01_PlatformerCharacter::ToggleInventory);
+		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Triggered, this, &AA01_PlatformerCharacter::ToggleInventory);
+
+		// Sprinting (Initial Press)
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AA01_PlatformerCharacter::ActivateSprint);
+
+		// Sprinting (Release)
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AA01_PlatformerCharacter::DeactivateSprint);
 	}
 	else
 	{
@@ -197,4 +224,26 @@ void AA01_PlatformerCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AA01_PlatformerCharacter::Jump()
+{
+	if (bIsSprinting)
+	{
+		SprintComponent->DeactivateSprint(this);		
+	}
+	
+	bPressedJump = true;
+	JumpKeyHoldTime = 0.0f;
+}
+
+void AA01_PlatformerCharacter::StopJumping()
+{
+	if (bIsSprinting)
+	{
+		SprintComponent->ActivateSprint(this);		
+	}
+	
+	bPressedJump = false;
+	ResetJumpState();
 }
