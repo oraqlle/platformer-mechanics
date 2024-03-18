@@ -23,6 +23,8 @@ void UInventoryWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	if (0 < ButtonList.Num()) { return; }
+
 	for(int32 Y = 0; Y < NumButtonHeight; Y++)
 	{
 		for(int32 X = 0; X < NumButtonWidth; X++)

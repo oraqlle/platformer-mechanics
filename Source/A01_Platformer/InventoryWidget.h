@@ -52,6 +52,7 @@ public:
 protected:
 	virtual void NativeConstruct() override;
 
+	UPROPERTY()
 	TArray<UItemButtonWidget*> ButtonList;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

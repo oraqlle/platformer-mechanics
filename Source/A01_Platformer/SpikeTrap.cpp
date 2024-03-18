@@ -62,7 +62,7 @@ void ASpikeTrap::DamageTime()
 {
 	if (CollidingPlayer)
 	{
-		CollidingPlayer->TakeDamage(DamagePerSecond);
+		CollidingPlayer->DamagePlayer(DamagePerSecond);
 	}
 }
 

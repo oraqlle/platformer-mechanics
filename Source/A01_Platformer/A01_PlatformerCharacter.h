@@ -70,7 +70,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UInventoryWidget> InventoryWidgetClass;
-	
+
+	UPROPERTY()
 	UInventoryWidget* InventoryWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -118,6 +119,6 @@ public:
 
 	auto DeactivateSprint() -> void;
 
-	auto TakeDamage(float Damage) -> void;
+	auto DamagePlayer(float Damage) -> void;
 };
 

@@ -16,6 +16,8 @@ class A01_PLATFORMER_API UInventoryActorComponent : public UActorComponent
 
 	UPROPERTY(EditAnywhere, Category="Inventory")
 	int32 InventorySize;
+
+	UPROPERTY()
 	TArray<UItem*> InventoryItems;
 
 public:	

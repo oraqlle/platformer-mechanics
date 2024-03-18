@@ -143,7 +143,7 @@ auto AA01_PlatformerCharacter::UseItem(int32 Index) -> void
 	InventoryWidget->RefreshInventory(InventoryComponent->GetAllItems());
 }
 
-auto AA01_PlatformerCharacter::TakeDamage(float Damage) -> void
+auto AA01_PlatformerCharacter::DamagePlayer(float Damage) -> void
 {
 	CurrentHealth -= Damage;
 
