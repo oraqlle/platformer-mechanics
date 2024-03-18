@@ -31,10 +31,24 @@ public:
 	float CurrentRotation;
 
 	FTimerHandle DropTimerHandle;
+
+	bool bIsTrapdoorOpen;
 	
 public:	
 	// Sets default values for this actor's properties
 	ATrapdoorActor();
+
+	UFUNCTION()
+	void OnTrapdoorTrigger(
+		UPrimitiveComponent* HitComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		FHitResult const& SweepResult);
+
+	UFUNCTION()
+	void OnTrapdoorActivate();
 
 protected:
 	// Called when the game starts or when spawned
