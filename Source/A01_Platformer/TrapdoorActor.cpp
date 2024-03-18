@@ -30,7 +30,7 @@ void ATrapdoorActor::OnTrapdoorTrigger(UPrimitiveComponent* HitComponent, AActor
 {
 	if (OtherActor && OtherActor != this)
 	{
-		if(AA01_PlatformerCharacter* Character = Cast<AA01_PlatformerCharacter>(OtherActor); Character) {
+		if (AA01_PlatformerCharacter* Character = Cast<AA01_PlatformerCharacter>(OtherActor); Character) {
 			GetWorld()->GetTimerManager().SetTimer(DropTimerHandle,
 				this,
 				&ATrapdoorActor::OnTrapdoorActivate,
