@@ -43,6 +43,15 @@ void AMoveablePlatform::Tick(float DeltaTime)
 
 	if (FVector::Distance(Waypoints[GoalIndex], NewLocation) <= ToleranceThreshold)
 	{
+		UE_LOG(
+			PlatformMovement,
+			Display,
+			TEXT("Moving Platform: %s has arrived at location (x: %.3f, y: %.3f, z: %.3f)"),
+			*GetName(),
+			NewLocation.Component(0),
+			NewLocation.Component(1),
+			NewLocation.Component(2));
+
 		NewLocation = Waypoints[GoalIndex];
 		GoalIndex += 1;
 	}

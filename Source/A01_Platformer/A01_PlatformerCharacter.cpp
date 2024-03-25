@@ -153,8 +153,13 @@ auto AA01_PlatformerCharacter::UseItem(int32 Index) -> void
 auto AA01_PlatformerCharacter::DamagePlayer(float Damage) -> void
 {
 	
-	UE_LOG(PlayerDamaged, Display, TEXT("Player took %.3f points of damage, health is now: %.3f"), Damage, CurrentHealth);
 	CurrentHealth -= Damage;
+	UE_LOG(
+		PlayerDamaged,
+		Display,
+		TEXT("Player took %.3f points of damage, health is now: %.3f"),
+		Damage,
+		CurrentHealth);
 
 	if (CurrentHealth <= 0.f)
 	{

@@ -2,6 +2,7 @@
 
 
 #include "HorizontalPlatform.h"
+#include "A01_Platformer.h"
 
 // Sets default values
 AHorizontalPlatform::AHorizontalPlatform()
@@ -40,6 +41,16 @@ void AHorizontalPlatform::Tick(float DeltaTime)
 
 	if (FVector::Distance(CurrentGoal, NewLocation) <= ToleranceThreshold)
 	{
+		
+		UE_LOG(
+			PlatformMovement,
+			Display,
+			TEXT("Moving Platform: %s has arrived at location (x: %.3f, y: %.3f, z: %.3f)"),
+			*GetName(),
+			NewLocation.Component(0),
+			NewLocation.Component(1),
+			NewLocation.Component(2));
+		
 		NewLocation = CurrentGoal;
 		CurrentGoal = PreviousStartLocation;
 		PreviousStartLocation = NewLocation;
