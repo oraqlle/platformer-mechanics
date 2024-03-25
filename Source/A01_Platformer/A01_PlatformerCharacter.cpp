@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "A01_PlatformerCharacter.h"
+
+#include "A01_Platformer.h"
 #include "Engine/LocalPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -134,17 +136,24 @@ auto AA01_PlatformerCharacter::DeactivateSprint() -> void
 
 auto AA01_PlatformerCharacter::AddItem(UItem* NewItem) -> bool
 {
-	return InventoryComponent->AddItem(NewItem);
+	auto const addResult = InventoryComponent->AddItem(NewItem);
+	
+	if (addResult) { UE_LOG(ItemUsage, Display, TEXT("Player picked up %s Power Item"), *NewItem->GetName()); }
+	
+	return addResult;
 }
 
 auto AA01_PlatformerCharacter::UseItem(int32 Index) -> void
 {
+	UE_LOG(ItemUsage, Display, TEXT("Player used %s Power Item"), *InventoryComponent->GetItemAtIndex(Index)->GetName());
 	InventoryComponent->UseItemAtIndex(Index, this);
 	InventoryWidget->RefreshInventory(InventoryComponent->GetAllItems());
 }
 
 auto AA01_PlatformerCharacter::DamagePlayer(float Damage) -> void
 {
+	
+	UE_LOG(PlayerDamaged, Display, TEXT("Player took %.3f points of damage, health is now: %.3f"), Damage, CurrentHealth);
 	CurrentHealth -= Damage;
 
 	if (CurrentHealth <= 0.f)
