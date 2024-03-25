@@ -3,6 +3,7 @@
 
 #include "SprintActorComponent.h"
 
+#include "A01_Platformer.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values for this component's properties
@@ -29,6 +30,11 @@ auto USprintActorComponent::ActivateSprint(AA01_PlatformerCharacter* AffectedCha
 	if (AffectedCharacter)
 	{
 		AffectedCharacter->GetCharacterMovement()->MaxWalkSpeed += SprintIncrease;
+		UE_LOG(
+			Sprinting,
+			Display,
+			TEXT("Player is now sprinting at a speed of: %.3f"),
+			AffectedCharacter->GetCharacterMovement()->MaxWalkSpeed);
 	}
 }
 
@@ -37,5 +43,10 @@ auto USprintActorComponent::DeactivateSprint(AA01_PlatformerCharacter* AffectedC
 	if (AffectedCharacter)
 	{
 		AffectedCharacter->GetCharacterMovement()->MaxWalkSpeed -= SprintIncrease;
+		UE_LOG(
+			Sprinting,
+			Display,
+			TEXT("Player is now walking at a speed of: %.3f"),
+			AffectedCharacter->GetCharacterMovement()->MaxWalkSpeed);
 	}
 }

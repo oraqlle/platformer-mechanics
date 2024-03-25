@@ -2,6 +2,8 @@
 
 
 #include "TurretActor.h"
+
+#include "A01_Platformer.h"
 #include "Projectile.h"
 
 // Sets default values
@@ -48,20 +50,23 @@ void ATurretActor::Tick(float DeltaTime)
 
 	if(bCanShoot && FVector::Distance(GetActorLocation(), TurretTarget->GetActorLocation()) <= TurretRange)
     {
+	    UE_LOG(TurretDetection, Display, TEXT("Turret: %s detected player"), *GetName());
+		
 		FVector const Location = GetActorLocation();
 		FVector const Forward = GetActorForwardVector();
 		FVector Direction = TurretTarget->GetActorLocation() - Location;
 
 		float const RotationAngleRad = FMath::Acos(Forward.Dot(Direction));
-		float const RotationAngleDeg = FMath::RadiansToDegrees(RotationAngleRad);
 
-		if (RotationAngleDeg <= FieldOfView)
+		if (float const RotationAngleDeg = FMath::RadiansToDegrees(RotationAngleRad); RotationAngleDeg <= FieldOfView)
 		{
 			Direction.Normalize();
 			FRotator const ProjectileRot = Direction.Rotation();
 			AProjectile* Projectile = Cast<AProjectile>(GetWorld()->SpawnActor(ProjectileClass,
 				&Location,
 				&ProjectileRot));
+
+			UE_LOG(Enemy, Display, TEXT("Turret: %s fired projectile at the player"), *GetName());
 
 			Projectile->Parent = this;
 			bCanShoot = false;

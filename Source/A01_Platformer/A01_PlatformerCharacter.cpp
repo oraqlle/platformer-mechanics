@@ -267,7 +267,7 @@ void AA01_PlatformerCharacter::StopJumping()
 {
 	if (bIsSprinting)
 	{
-		SprintComponent->ActivateSprint(this);		
+		SprintComponent->ActivateSprint(this);
 	}
 	
 	bPressedJump = false;

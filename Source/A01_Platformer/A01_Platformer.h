@@ -9,4 +9,4 @@ DECLARE_LOG_CATEGORY_EXTERN(ItemUsage, Display, All);
 DECLARE_LOG_CATEGORY_EXTERN(PlayerDamaged, Display, All);
 DECLARE_LOG_CATEGORY_EXTERN(TurretDetection, Display, All);
 DECLARE_LOG_CATEGORY_EXTERN(Enemy, Display, All);
-DECLARE_LOG_CATEGORY_EXTERN(PowerUp, Display, All);
+DECLARE_LOG_CATEGORY_EXTERN(Sprinting, Display, All);
