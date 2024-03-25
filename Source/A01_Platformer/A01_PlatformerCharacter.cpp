@@ -154,11 +154,23 @@ auto AA01_PlatformerCharacter::DamagePlayer(float Damage) -> void
 	}
 }
 
+void AA01_PlatformerCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if(GEngine) {
+		GEngine->AddOnScreenDebugMessage(1,
+			2.0f,
+			FColor::Yellow,
+			FString::Printf(TEXT("Platformer Character's Current Health is: %f"),
+			CurrentHealth));
+	}
+}
+
+
 
 //////////////////////////////////////////////////////////////////////////
 // Input
-
-
 
 void AA01_PlatformerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

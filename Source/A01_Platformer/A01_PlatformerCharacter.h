@@ -100,6 +100,9 @@ protected:
 	virtual void BeginPlay();
 
 public:
+
+	void Tick(float DeltaSeconds) override;
+	
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/

@@ -2,6 +2,7 @@
 
 
 #include "MoveablePlatform.h"
+#include "A01_Platformer.h"
 
 // Sets default values
 AMoveablePlatform::AMoveablePlatform()
@@ -33,7 +34,9 @@ void AMoveablePlatform::Tick(float DeltaTime)
 	if (Waypoints.Num() == 0 || GoalIndex >= Waypoints.Num()) { return; }
 
 	FVector Direction = Waypoints[GoalIndex] - GetActorLocation();
+	UE_LOG(PlatformMovement, Display, TEXT("Moving Platform: %s has a direction of: %s"), *GetName(), *Direction.ToString());
 	Direction.Normalize();
+	UE_LOG(PlatformMovement, Display, TEXT("Moving Platform: %s has a normalised direction of: %s"), *GetName(), *Direction.ToString());
 	
 	Direction *= MovementSpeed * DeltaTime;
 	FVector NewLocation = GetActorLocation() + Direction;
