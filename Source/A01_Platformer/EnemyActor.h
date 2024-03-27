@@ -20,11 +20,37 @@ public:
 	AActor* Target;
 
 	UPROPERTY(EditAnywhere)
-	float EnemySpeed;
+	float MovementSpeed;
 
 	UPROPERTY(EditAnywhere)
-	float DamageAmount;
+	float MeleeDamageAmount;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AProjectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere)
+	uint8 MaxAmmo;
+
+	UPROPERTY(EditAnywhere)
+	uint8 CurrentAmmo;
+
+	UPROPERTY(EditAnywhere)
+	float ShootingRange;
+
+	UPROPERTY(EditAnywhere)
+	float ShootingDelay;
 	
+	bool bCanShoot;
+
+	float FiringDelayTimer;
+	
+	UPROPERTY(EditAnywhere)
+	float ReloadDelay;
+
+	bool bReloading;
+
+	float ReloadTimer;
+
 public:	
 	// Sets default values for this actor's properties
 	AEnemyActor();

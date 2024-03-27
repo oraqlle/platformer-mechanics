@@ -2,7 +2,10 @@
 
 
 #include "EnemyActor.h"
+
+#include "A01_Platformer.h"
 #include "A01_PlatformerCharacter.h"
+#include "Projectile.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -16,8 +19,20 @@ AEnemyActor::AEnemyActor()
     EnemyMesh->SetupAttachment(RootComponent);
 	
     Target = nullptr;
-    DamageAmount = 50;
-    EnemySpeed = 200;
+    MeleeDamageAmount = 50;
+    MovementSpeed = 200;
+
+	MaxAmmo = 5;
+	CurrentAmmo = 5;
+	ShootingRange = 400.f;
+
+	ShootingDelay = 2.f;
+	bCanShoot = true;
+	FiringDelayTimer = 0.f;
+
+	ReloadDelay = 7.f;
+	bReloading = false;
+	ReloadTimer = 0.f;
 }
 
 void AEnemyActor::OnEnemyCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -25,9 +40,9 @@ void AEnemyActor::OnEnemyCollision(UPrimitiveComponent* OverlappedComponent, AAc
 {
 	if (AA01_PlatformerCharacter* Character = Cast<AA01_PlatformerCharacter>(OtherActor))
 	{
-		Character->DamagePlayer(DamageAmount);
+		Character->DamagePlayer(MeleeDamageAmount);
+		Destroy();
     }
-    Destroy();
 }
 
 // Called when the game starts or when spawned
@@ -42,17 +57,57 @@ void AEnemyActor::BeginPlay()
 void AEnemyActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (!bReloading)
+	{
+		ReloadTimer += DeltaTime;
+		if (ReloadTimer >= ReloadDelay)
+		{
+			bCanShoot = true;
+			bReloading = false;
+			ReloadTimer = 0.f;
+		}
+    } else if (!bCanShoot)
+	{
+		FiringDelayTimer += DeltaTime;
+		if (FiringDelayTimer >= ShootingDelay)
+		{
+			bCanShoot = true;
+			ReloadTimer = 0.f;
+		}
+    }
 
 	if (!Target) { return; }
 
-	FVector Direction = Target->GetActorLocation() - GetActorLocation();
-    Direction.Normalize();
-    Direction.Z = 0;
-    FVector NewLocation = GetActorLocation() + (Direction * EnemySpeed * DeltaTime);
+	FVector const OurLocation = GetActorLocation();
+	FVector Direction = Target->GetActorLocation() - OurLocation;
+	Direction.Normalize();
 
-	FRotator EnemyRotation = UKismetMathLibrary::MakeRotFromX(Direction);
-    EnemyRotation.Pitch = 0;
-    EnemyRotation.Roll = 0;
-    SetActorLocationAndRotation(NewLocation, EnemyRotation);
+	if(bCanShoot && FVector::Distance(GetActorLocation(), Target->GetActorLocation()) <= ShootingRange)
+    {
+		FRotator const ProjectileRot = Direction.Rotation();
+		AProjectile* Projectile = Cast<AProjectile>(GetWorld()->SpawnActor(ProjectileClass,
+			&OurLocation,
+			&ProjectileRot));
+
+		UE_LOG(Enemy, Display, TEXT("Enemy: %s fired projectile at the player"), *GetName());
+
+		Projectile->Parent = this;
+		Projectile->DamageAmount = 2.f;
+		Projectile->MovementSpeed = 2000.f;
+		bCanShoot = false;
+		CurrentAmmo -= 1u;
+
+		bReloading = CurrentAmmo == 0u;
+    } else if (bReloading) {
+		Direction.Z = 0;
+		
+		FVector NewLocation = OurLocation + (Direction * MovementSpeed * DeltaTime);
+
+		FRotator EnemyRotation = UKismetMathLibrary::MakeRotFromX(Direction);
+		EnemyRotation.Pitch = 0;
+		EnemyRotation.Roll = 0;
+		SetActorLocationAndRotation(NewLocation, EnemyRotation);
+	}
 }
 
