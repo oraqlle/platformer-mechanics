@@ -29,10 +29,13 @@ public:
 	TSubclassOf<class AProjectile> ProjectileClass;
 
 	UPROPERTY(EditAnywhere)
-	uint8 MaxAmmo;
+	uint8 Ammo;
 
 	UPROPERTY(EditAnywhere)
-	uint8 CurrentAmmo;
+	float ProjectileSpeed;
+
+	UPROPERTY(EditAnywhere)
+	float ProjectileDamage;
 
 	UPROPERTY(EditAnywhere)
 	float ShootingRange;
@@ -41,16 +44,10 @@ public:
 	float ShootingDelay;
 	
 	bool bCanShoot;
+	bool bCanChase;
 
 	float FiringDelayTimer;
 	
-	UPROPERTY(EditAnywhere)
-	float ReloadDelay;
-
-	bool bReloading;
-
-	float ReloadTimer;
-
 public:	
 	// Sets default values for this actor's properties
 	AEnemyActor();

@@ -22,17 +22,16 @@ AEnemyActor::AEnemyActor()
     MeleeDamageAmount = 50;
     MovementSpeed = 200;
 
-	MaxAmmo = 5;
-	CurrentAmmo = 5;
+	Ammo = 5;
 	ShootingRange = 400.f;
+
+	ProjectileDamage = 20.f;
+	ProjectileSpeed = 2000.f;
 
 	ShootingDelay = 2.f;
 	bCanShoot = true;
+	bCanChase = true;
 	FiringDelayTimer = 0.f;
-
-	ReloadDelay = 7.f;
-	bReloading = false;
-	ReloadTimer = 0.f;
 }
 
 void AEnemyActor::OnEnemyCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -58,22 +57,13 @@ void AEnemyActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (!bReloading)
-	{
-		ReloadTimer += DeltaTime;
-		if (ReloadTimer >= ReloadDelay)
-		{
-			bCanShoot = true;
-			bReloading = false;
-			ReloadTimer = 0.f;
-		}
-    } else if (!bCanShoot)
+	if (!bCanShoot)
 	{
 		FiringDelayTimer += DeltaTime;
 		if (FiringDelayTimer >= ShootingDelay)
 		{
 			bCanShoot = true;
-			ReloadTimer = 0.f;
+			FiringDelayTimer = 0.f;
 		}
     }
 
@@ -83,8 +73,9 @@ void AEnemyActor::Tick(float DeltaTime)
 	FVector Direction = Target->GetActorLocation() - OurLocation;
 	Direction.Normalize();
 
-	if(bCanShoot && FVector::Distance(GetActorLocation(), Target->GetActorLocation()) <= ShootingRange)
+	if (Ammo > 0 && bCanShoot && FVector::Distance(GetActorLocation(), Target->GetActorLocation()) <= ShootingRange)
     {
+		bCanChase = false;
 		FRotator const ProjectileRot = Direction.Rotation();
 		AProjectile* Projectile = Cast<AProjectile>(GetWorld()->SpawnActor(ProjectileClass,
 			&OurLocation,
@@ -93,13 +84,12 @@ void AEnemyActor::Tick(float DeltaTime)
 		UE_LOG(Enemy, Display, TEXT("Enemy: %s fired projectile at the player"), *GetName());
 
 		Projectile->Parent = this;
-		Projectile->DamageAmount = 2.f;
-		Projectile->MovementSpeed = 2000.f;
+		Projectile->DamageAmount = ProjectileDamage;
+		Projectile->MovementSpeed = ProjectileSpeed;
 		bCanShoot = false;
-		CurrentAmmo -= 1u;
-
-		bReloading = CurrentAmmo == 0u;
-    } else if (bReloading) {
+		Ammo -= 1u;
+		bCanChase = Ammo == 0;
+    } else if (bCanChase) {
 		Direction.Z = 0;
 		
 		FVector NewLocation = OurLocation + (Direction * MovementSpeed * DeltaTime);
