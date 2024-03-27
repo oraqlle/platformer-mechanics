@@ -13,6 +13,8 @@ AMoveablePlatform::AMoveablePlatform()
 	MovementSpeed = 100.f;
 	ToleranceThreshold = 10.f;
 	GoalIndex = 0;
+	bReversed = false;
+	EMovementType = EMovement_t::EMovementType_Finite;
 	
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
 	PlatformMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Platform Mesh"));
@@ -23,7 +25,16 @@ AMoveablePlatform::AMoveablePlatform()
 void AMoveablePlatform::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if (EMovementType == EMovement_t::EMovementType_Reversing
+	 || EMovementType == EMovement_t::EMovementType_Looping)
+	{
+		checkf(
+			Waypoints.Num() > 3,
+			TEXT("Must have at least 4 waypoints for Reversing and Looping AMovementPlatform, Platform: %s only has %d"),
+			*GetName(),
+			Waypoints.Num());
+	}
 }
 
 // Called every frame
@@ -31,12 +42,33 @@ void AMoveablePlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (Waypoints.Num() == 0 || GoalIndex >= Waypoints.Num()) { return; }
+	if (Waypoints.Num() == 0) { return;	}
 
+	switch (EMovementType)
+	{
+	case EMovement_t::EMovementType_Finite:
+		if (GoalIndex >= Waypoints.Num()) { return; }
+		break;
+	case EMovement_t::EMovementType_Reversing:
+		if (GoalIndex >= Waypoints.Num())
+		{
+			bReversed = true;
+			GoalIndex += bReversed ? -1 : 1;
+		}
+		else if (GoalIndex < 0)
+		{
+			bReversed = false;
+			GoalIndex += bReversed ? -1 : 1;
+		}
+
+		break;
+	case EMovement_t::EMovementType_Looping:
+		if (GoalIndex >= Waypoints.Num()) { GoalIndex = 0; }
+		break;
+	}
+	
 	FVector Direction = Waypoints[GoalIndex] - GetActorLocation();
-	// UE_LOG(PlatformMovement, Display, TEXT("Moving Platform: %s has a direction of: %s"), *GetName(), *Direction.ToString());
 	Direction.Normalize();
-	// UE_LOG(PlatformMovement, Display, TEXT("Moving Platform: %s has a normalised direction of: %s"), *GetName(), *Direction.ToString());
 	
 	Direction *= MovementSpeed * DeltaTime;
 	FVector NewLocation = GetActorLocation() + Direction;
@@ -53,7 +85,7 @@ void AMoveablePlatform::Tick(float DeltaTime)
 			NewLocation.Component(2));
 
 		NewLocation = Waypoints[GoalIndex];
-		GoalIndex += 1;
+		GoalIndex += bReversed ? -1 : 1;
 	}
 
 	SetActorLocation(NewLocation);

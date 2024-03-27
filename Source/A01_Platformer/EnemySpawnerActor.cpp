@@ -30,6 +30,7 @@ void AEnemySpawnerActor::SpawnEnemy()
 		GetActorLocation().Z);
 	
 	AEnemyActor* NewEnemy = Cast<AEnemyActor>(GetWorld()->SpawnActor(EnemyClass, &RandomSpawn));
+	if (!NewEnemy) { return; }
 	NewEnemy->Target = EnemyTarget;
 
 	UE_LOG(
