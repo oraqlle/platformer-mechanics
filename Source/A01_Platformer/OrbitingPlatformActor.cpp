@@ -35,21 +35,18 @@ void AOrbitingPlatformActor::Tick(float DeltaTime)
 
 	if (!OriginActor) { return; }
 
-	// OrbitAngle = OrbitSpeed * DeltaTime;
-	OrbitAngle += 1.f;
+	OrbitAngle += OrbitSpeed * DeltaTime;
 
 	if (OrbitAngle >= 360.f)
 	{
 		OrbitAngle -= 360.f;
 	}
 
-	auto Bounds = OriginActor->GetRootComponent()->Bounds;
-	auto Origin = Bounds.Origin;
-	FVector RotateValue = OrbitRadius.RotateAngleAxis(OrbitAngle, FVector(0.f, 0.f, 1.f));
-	FVector NewLocation = Origin + RotateValue;
+	auto const Bounds = OriginActor->GetRootComponent()->Bounds;
+	auto const Origin = Bounds.Origin;
+	FVector const RotateValue = OrbitRadius.RotateAngleAxis(OrbitAngle, FVector(0.f, 0.f, 1.f));
+	FVector const NewLocation = Origin + RotateValue;
 	
 	SetActorLocation(NewLocation);
-
-	
 }
 
