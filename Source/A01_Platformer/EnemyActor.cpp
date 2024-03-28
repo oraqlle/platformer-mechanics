@@ -19,8 +19,8 @@ AEnemyActor::AEnemyActor()
     EnemyMesh->SetupAttachment(RootComponent);
 	
     Target = nullptr;
-    MeleeDamageAmount = 50;
-    MovementSpeed = 200;
+    MeleeDamageAmount = 50.f;
+    MovementSpeed = 200.f;
 
 	Ammo = 5;
 	ShootingRange = 400.f;
