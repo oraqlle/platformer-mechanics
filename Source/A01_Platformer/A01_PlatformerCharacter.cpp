@@ -202,7 +202,7 @@ void AA01_PlatformerCharacter::SetupPlayerInputComponent(UInputComponent* Player
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AA01_PlatformerCharacter::Look);
 
 		// Opening/Closing Inventory
-		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Triggered, this, &AA01_PlatformerCharacter::ToggleInventory);
+		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &AA01_PlatformerCharacter::ToggleInventory);
 
 		// Sprinting (Initial Press)
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AA01_PlatformerCharacter::ActivateSprint);
