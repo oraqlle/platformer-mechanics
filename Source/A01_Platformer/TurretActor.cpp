@@ -66,7 +66,7 @@ void ATurretActor::Tick(float DeltaTime)
 				&Location,
 				&ProjectileRot));
 
-			UE_LOG(Enemy, Display, TEXT("Turret: %s fired projectile at the player"), *GetName());
+			UE_LOG(Enemy, Display, TEXT("Turret: %s has fired projectile at the player"), *GetName());
 
 			Projectile->Parent = this;
 			bCanShoot = false;

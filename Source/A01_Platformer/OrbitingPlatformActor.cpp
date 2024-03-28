@@ -3,6 +3,8 @@
 
 #include "OrbitingPlatformActor.h"
 
+#include "A01_Platformer.h"
+
 // Sets default values
 AOrbitingPlatformActor::AOrbitingPlatformActor()
 {
@@ -46,6 +48,15 @@ void AOrbitingPlatformActor::Tick(float DeltaTime)
 	auto const Origin = Bounds.Origin;
 	FVector const RotateValue = OrbitRadius.RotateAngleAxis(OrbitAngle, FVector(0.f, 0.f, 1.f));
 	FVector const NewLocation = Origin + RotateValue;
+
+	UE_LOG(
+    		  PlatformMovement,
+    		  Display,
+    		  TEXT("Orbiting Platform: %s has arrived at location (x: %.3f, y: %.3f, z: %.3f)"),
+    		  *GetName(),
+    		  NewLocation.Component(0),
+    		  NewLocation.Component(1),
+    		  NewLocation.Component(2));
 	
 	SetActorLocation(NewLocation);
 }

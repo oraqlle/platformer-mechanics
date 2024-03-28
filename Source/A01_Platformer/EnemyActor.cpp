@@ -89,6 +89,8 @@ void AEnemyActor::Tick(float DeltaTime)
 		bCanShoot = false;
 		Ammo -= 1u;
 		bCanChase = Ammo == 0;
+
+		UE_LOG(Enemy, Display, TEXT("Enemy: %s has fired projectile at the player"), *GetName());
     } else if (bCanChase) {
 		Direction.Z = 0;
 		

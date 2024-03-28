@@ -45,7 +45,7 @@ void AHorizontalPlatform::Tick(float DeltaTime)
 		UE_LOG(
 			PlatformMovement,
 			Display,
-			TEXT("Moving Platform: %s has arrived at location (x: %.3f, y: %.3f, z: %.3f)"),
+			TEXT("Horizontal Platform: %s has arrived at location (x: %.3f, y: %.3f, z: %.3f)"),
 			*GetName(),
 			NewLocation.Component(0),
 			NewLocation.Component(1),

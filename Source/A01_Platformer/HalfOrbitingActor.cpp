@@ -3,6 +3,8 @@
 
 #include "HalfOrbitingActor.h"
 
+#include "A01_Platformer.h"
+
 // Sets default values
 AHalfOrbitingActor::AHalfOrbitingActor()
 {
@@ -62,6 +64,15 @@ void AHalfOrbitingActor::Tick(float DeltaTime)
 	}
 
 	auto const Rotation = FRotator(0.0, CurrentRotation, 0.0);
+
+	UE_LOG(
+		  PlatformMovement,
+		  Display,
+		  TEXT("Half Orbiting Platform: %s has arrived at location (x: %.3f, y: %.3f, z: %.3f)"),
+		  *GetName(),
+		  NewLocation.Component(0),
+		  NewLocation.Component(1),
+		  NewLocation.Component(2));
 	
 	SetActorLocationAndRotation(NewLocation, Rotation);
 }
