@@ -19,13 +19,13 @@ AEnemyActor::AEnemyActor()
     EnemyMesh->SetupAttachment(RootComponent);
 	
     Target = nullptr;
-    MeleeDamageAmount = 0.f;
+    MeleeDamageAmount = 50.f;
     MovementSpeed = 200.f;
 
 	Ammo = 5;
 	ShootingRange = 400.f;
 
-	ProjectileDamage = 0.f;
+	ProjectileDamage = 20.f;
 	ProjectileSpeed = 2000.f;
 
 	ShootingDelay = 2.f;
@@ -37,11 +37,12 @@ AEnemyActor::AEnemyActor()
 void AEnemyActor::OnEnemyCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, FHitResult const& SweepResult)
 {
-	if (AA01_PlatformerCharacter* Character = Cast<AA01_PlatformerCharacter>(OtherActor))
+	if (AA01_PlatformerCharacter* Character = Cast<AA01_PlatformerCharacter>(OtherActor); Character)
 	{
 		Character->DamagePlayer(MeleeDamageAmount);
-		Destroy();
     }
+
+	Destroy();
 }
 
 // Called when the game starts or when spawned
@@ -70,6 +71,7 @@ void AEnemyActor::Tick(float DeltaTime)
 	if (!Target) { return; }
 
 	FVector const OurLocation = GetActorLocation();
+	auto const ProjectileSpawnLocation = OurLocation + (50.f * GetActorForwardVector());
 	FVector Direction = Target->GetActorLocation() - OurLocation;
 	Direction.Normalize();
 
@@ -78,7 +80,7 @@ void AEnemyActor::Tick(float DeltaTime)
 		bCanChase = false;
 		FRotator const ProjectileRot = Direction.Rotation();
 		AProjectile* Projectile = Cast<AProjectile>(GetWorld()->SpawnActor(ProjectileClass,
-			&OurLocation,
+			&ProjectileSpawnLocation,
 			&ProjectileRot));
 
 		UE_LOG(Enemy, Display, TEXT("Enemy: %s fired projectile at the player"), *GetName());

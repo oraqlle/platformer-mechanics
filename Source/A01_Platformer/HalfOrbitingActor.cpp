@@ -4,6 +4,7 @@
 #include "HalfOrbitingActor.h"
 
 #include "A01_Platformer.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AHalfOrbitingActor::AHalfOrbitingActor()
@@ -28,7 +29,6 @@ void AHalfOrbitingActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//OrbitAngle = FMath::ClampAngle(StartingAngle, 0.f, 180.f);
 	OrbitAngle = StartingAngle;
 }
 
@@ -44,14 +44,14 @@ void AHalfOrbitingActor::Tick(float DeltaTime)
 	
 	auto const Bounds = OriginActor->GetRootComponent()->Bounds;
 	auto const OrbitOrigin = Bounds.Origin;
-	auto const Forward = GetActorForwardVector();
 	auto const PivotValue = OrbitRadius.RotateAngleAxis(OrbitAngle, FVector(0.f, 0.f, 1.f));
 	auto const NewLocation = OrbitOrigin + PivotValue + FVector(100.f, 100.f, 0.f);
     
-	auto const Direction = OrbitOrigin - NewLocation;	
-	auto const RotationAngleRad = FMath::Acos(Forward.Dot(Direction) / (Forward.Length() * Direction.Length()));
-	auto const RotationAngleDeg = FMath::RadiansToDegrees(RotationAngleRad);
-	CurrentRotation += (bReversed ? -RotationAngleDeg : RotationAngleDeg) * DeltaTime;
+	auto Direction = OrbitOrigin - NewLocation;
+	Direction.Normalize();
+	FRotator NewRotation = UKismetMathLibrary::MakeRotFromX(Direction);
+	NewRotation.Pitch = 0;
+	NewRotation.Roll = 0;
 
 	if (OrbitAngle < 0.f)
 	{
@@ -63,8 +63,6 @@ void AHalfOrbitingActor::Tick(float DeltaTime)
 		 OrbitAngle = 180.f;
 	}
 
-	auto const Rotation = FRotator(0.0, CurrentRotation, 0.0);
-
 	UE_LOG(
 		  PlatformMovement,
 		  Display,
@@ -74,6 +72,6 @@ void AHalfOrbitingActor::Tick(float DeltaTime)
 		  NewLocation.Component(1),
 		  NewLocation.Component(2));
 	
-	SetActorLocationAndRotation(NewLocation, Rotation);
+	SetActorLocationAndRotation(NewLocation, NewRotation);
 }
 
