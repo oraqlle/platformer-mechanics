@@ -13,8 +13,8 @@ ARotationActor::ARotationActor()
 	PlatformMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Platform Mesh"));
 	PlatformMesh->SetupAttachment(RootComponent);
 
-	RotationSpeed = 180;
-	CurrentRotation = 0;
+	RotationSpeed = 180.f;
+	CurrentRotation = 0.f;
 }
 
 // Called when the game starts or when spawned
@@ -31,11 +31,10 @@ void ARotationActor::Tick(float DeltaTime)
 
 	CurrentRotation += RotationSpeed * DeltaTime;
 
-	if (CurrentRotation >= 360) {
-		CurrentRotation -= 360;
+	if (CurrentRotation >= 360.f) {
+		CurrentRotation -= 360.f;
     }
     
     FRotator Rotation = FRotator(0,CurrentRotation,0);
     SetActorRotation(Rotation);
 }
-
