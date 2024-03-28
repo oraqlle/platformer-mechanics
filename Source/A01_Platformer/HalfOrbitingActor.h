@@ -32,6 +32,8 @@ public:
 
 	float OrbitAngle;
 
+	float CurrentRotation;
+
 	bool bReversed;
 
 protected:

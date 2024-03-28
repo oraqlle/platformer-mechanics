@@ -172,7 +172,7 @@ void AA01_PlatformerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if(GEngine) {
+	if (GEngine) {
 		GEngine->AddOnScreenDebugMessage(1,
 			2.0f,
 			FColor::Yellow,

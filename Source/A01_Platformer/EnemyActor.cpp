@@ -19,13 +19,13 @@ AEnemyActor::AEnemyActor()
     EnemyMesh->SetupAttachment(RootComponent);
 	
     Target = nullptr;
-    MeleeDamageAmount = 50.f;
+    MeleeDamageAmount = 0.f;
     MovementSpeed = 200.f;
 
 	Ammo = 5;
 	ShootingRange = 400.f;
 
-	ProjectileDamage = 20.f;
+	ProjectileDamage = 0.f;
 	ProjectileSpeed = 2000.f;
 
 	ShootingDelay = 2.f;

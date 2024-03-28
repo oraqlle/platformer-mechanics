@@ -18,6 +18,7 @@ AHalfOrbitingActor::AHalfOrbitingActor()
 	StartingAngle = 0.f;
 	OrbitAngle = 0.f;
 	OriginActor = nullptr;
+	bReversed = false;
 }
 
 // Called when the game starts or when spawned
@@ -25,7 +26,8 @@ void AHalfOrbitingActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	OrbitAngle = FMath::ClampAngle(StartingAngle, 0.f, 180.f);
+	//OrbitAngle = FMath::ClampAngle(StartingAngle, 0.f, 180.f);
+	OrbitAngle = StartingAngle;
 }
 
 // Called every frame
@@ -35,24 +37,32 @@ void AHalfOrbitingActor::Tick(float DeltaTime)
 
 	if (!OriginActor) { return; }
 
-	float const DeltaAngle = OrbitSpeed * DeltaTime;
+	auto const DeltaAngle = OrbitSpeed * DeltaTime;
 	OrbitAngle += bReversed ? -DeltaAngle : DeltaAngle;
 	
+	auto const Bounds = OriginActor->GetRootComponent()->Bounds;
+	auto const OrbitOrigin = Bounds.Origin;
+	auto const Forward = GetActorForwardVector();
+	auto const PivotValue = OrbitRadius.RotateAngleAxis(OrbitAngle, FVector(0.f, 0.f, 1.f));
+	auto const NewLocation = OrbitOrigin + PivotValue + FVector(100.f, 100.f, 0.f);
+    
+	auto const Direction = OrbitOrigin - NewLocation;	
+	auto const RotationAngleRad = FMath::Acos(Forward.Dot(Direction) / (Forward.Length() * Direction.Length()));
+	auto const RotationAngleDeg = FMath::RadiansToDegrees(RotationAngleRad);
+	CurrentRotation += (bReversed ? -RotationAngleDeg : RotationAngleDeg) * DeltaTime;
+
 	if (OrbitAngle < 0.f)
 	{
-		bReversed = false;
-		OrbitAngle = 0.f;
-	} else if (180.f < OrbitAngle)
+		 bReversed = false;
+		 OrbitAngle = 0.f;
+	} else if (OrbitAngle > 180.f)
 	{
-		bReversed = true;
-		OrbitAngle = 180.f;
+		 bReversed = true;
+		 OrbitAngle = 180.f;
 	}
+
+	auto const Rotation = FRotator(0.0, CurrentRotation, 0.0);
 	
-	auto const Bounds = OriginActor->GetRootComponent()->Bounds;
-	auto const Origin = Bounds.Origin;
-	FVector const RotateValue = OrbitRadius.RotateAngleAxis(OrbitAngle, FVector(0.f, 0.f, 1.f));
-	FVector const NewLocation = Origin + RotateValue;
-	
-	SetActorLocation(NewLocation);
+	SetActorLocationAndRotation(NewLocation, Rotation);
 }
 
