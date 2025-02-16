@@ -1,19 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
-#pragma once
-
-#include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
-#include "A01_PlatformerGameMode.generated.h"
-
-UCLASS(minimalapi)
-class AA01_PlatformerGameMode : public AGameModeBase
-{
-	GENERATED_BODY()
-
-public:
-	AA01_PlatformerGameMode();
-};
-
-
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:9a4744e1c7de77036f7f26fff5c504aa669dd455cd747ecf056f2356fbe192de
+size 332

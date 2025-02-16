@@ -1,28 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "ItemButtonWidget.h"
-
-#include "Components/Button.h"
-
-void UItemButtonWidget::UpdateItemIcon(UTexture2D* NewIcon)
-{
-	FButtonStyle NewStyle = MainButton->GetStyle();
-	NewStyle.Normal.SetResourceObject(NewIcon);
-	NewStyle.Hovered.SetResourceObject(NewIcon);
-	NewStyle.Pressed.SetResourceObject(NewIcon);
-	NewStyle.Disabled.SetResourceObject(NewIcon);
-	MainButton->SetStyle(NewStyle);
-}
-
-void UItemButtonWidget::NativeConstruct()
-{
-	Super::NativeConstruct();
-
-	MainButton->OnClicked.AddUniqueDynamic(this, &UItemButtonWidget::OnButtonClicked);
-}
-
-void UItemButtonWidget::OnButtonClicked()
-{
-	OnClickedDelegate.Broadcast(this);
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:731fc674dc805b3be179107b40fa6bf238803d6828b9d284cc3e45f7dcc8a410
+size 744

@@ -1,12 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
-#pragma once
-
-#include "CoreMinimal.h"
-
-DECLARE_LOG_CATEGORY_EXTERN(PlatformMovement, Display, All);
-DECLARE_LOG_CATEGORY_EXTERN(ItemUsage, Display, All);
-DECLARE_LOG_CATEGORY_EXTERN(PlayerDamaged, Display, All);
-DECLARE_LOG_CATEGORY_EXTERN(TurretDetection, Display, All);
-DECLARE_LOG_CATEGORY_EXTERN(Enemy, Display, All);
-DECLARE_LOG_CATEGORY_EXTERN(Sprinting, Display, All);
+version https://git-lfs.github.com/spec/v1
+oid sha256:8ddd929f1aceff7a38ee73d57507988a165ca786220d5b56dff3bc3c55f7c7c1
+size 441

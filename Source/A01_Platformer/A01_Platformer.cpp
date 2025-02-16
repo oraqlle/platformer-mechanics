@@ -1,14 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
-#include "A01_Platformer.h"
-#include "Modules/ModuleManager.h"
-
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, A01_Platformer, "A01_Platformer" );
-
-DEFINE_LOG_CATEGORY(PlatformMovement);
-DEFINE_LOG_CATEGORY(ItemUsage);
-DEFINE_LOG_CATEGORY(PlayerDamaged);
-DEFINE_LOG_CATEGORY(TurretDetection);
-DEFINE_LOG_CATEGORY(Enemy);
-DEFINE_LOG_CATEGORY(Sprinting);
- 
+version https://git-lfs.github.com/spec/v1
+oid sha256:6173159259bd370c34330df91194e505213ef57f3ea585d6d229cd629371090b
+size 427

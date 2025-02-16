@@ -1,17 +1,3 @@
-Binaries
-DerivedDataCache
-Intermediate
-Saved
-.vscode
-.vs
-*.VC.db
-*.opensdf
-*.opendb
-*.sdf
-*.sln
-*.suo
-*.xcodeproj
-*.xcworkspace
-.idea/
-.vsconfig
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:0c87adb1e01dffd7d22456fc4a04a0b696b959025b9806a441af849b92ca4e5a
+size 146
