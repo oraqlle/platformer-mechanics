@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:47c04b4d99a936bfbad69792ceb503e8cc6284e6a914f3a95aeff475e5c956f3
-size 75
+/.git
+/.idea
+/.vs
+/.vscode
+/Content
+/DerivedDataCache
+/Intermediate
+/Saved
