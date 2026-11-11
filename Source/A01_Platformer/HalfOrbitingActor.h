@@ -1,3 +1,47 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:60611e9058c7e698af219acb653e9dcb7fc8e69547be5d907ed8547cf3a17ea4
-size 896
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "HalfOrbitingActor.generated.h"
+
+UCLASS()
+class A01_PLATFORMER_API AHalfOrbitingActor : public AActor
+{
+	GENERATED_BODY()
+	
+public:	
+	// Sets default values for this actor's properties
+	AHalfOrbitingActor();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float OrbitSpeed;
+
+	UPROPERTY(EditAnywhere)
+	FVector OrbitRadius;
+	
+	UPROPERTY(EditAnywhere)
+	AActor* OriginActor;
+
+	UPROPERTY(EditAnywhere)
+	float StartingAngle;
+
+	float OrbitAngle;
+
+	float CurrentRotation;
+
+	bool bReversed;
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+};

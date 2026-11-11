@@ -1,3 +1,32 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0914aa5f9bcc46845083def1937d7e373e053d26ea80057c076d21566a0b267e
-size 807
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "A01_PlatformerCharacter.h"
+#include "Components/ActorComponent.h"
+#include "SprintActorComponent.generated.h"
+
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class A01_PLATFORMER_API USprintActorComponent : public UActorComponent
+{
+	GENERATED_BODY()
+
+public:	
+	// Sets default values for this component's properties
+	USprintActorComponent();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float SprintIncrease;
+
+protected:
+	// Called when the game starts
+	virtual void BeginPlay() override;
+
+public:
+
+	auto ActivateSprint(AA01_PlatformerCharacter* AffectedCharacter) -> void;
+
+	auto DeactivateSprint(AA01_PlatformerCharacter* AffectedCharacter) -> void;
+};

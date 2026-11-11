@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:dd5fce26bbcac756be1274047fde6fb86d5c5023de23c07469c12db624604814
-size 408
+// Copyright Epic Games, Inc. All Rights Reserved.
+
+using UnrealBuildTool;
+
+public class A01_Platformer : ModuleRules
+{
+	public A01_Platformer(ReadOnlyTargetRules Target) : base(Target)
+	{
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "UMG", "Slate", "SlateCore" });
+	}
+}

@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:57a0e82a2f92edeebf420c9b9fa2ad9fd1abef98af9921e12e2c589c9d141bc2
-size 425
+// Copyright Epic Games, Inc. All Rights Reserved.
+
+using UnrealBuildTool;
+using System.Collections.Generic;
+
+public class A01_PlatformerTarget : TargetRules
+{
+	public A01_PlatformerTarget(TargetInfo Target) : base(Target)
+	{
+		Type = TargetType.Game;
+		DefaultBuildSettings = BuildSettingsVersion.V4;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
+		ExtraModuleNames.Add("A01_Platformer");
+	}
+}

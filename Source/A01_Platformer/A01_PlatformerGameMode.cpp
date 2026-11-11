@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:478c5bf18866acbf8069bfaa3b5eb4bdf1530eed7ea36583b2ccf709db4bbb09
-size 511
+// Copyright Epic Games, Inc. All Rights Reserved.
+
+#include "A01_PlatformerGameMode.h"
+#include "A01_PlatformerCharacter.h"
+#include "UObject/ConstructorHelpers.h"
+
+AA01_PlatformerGameMode::AA01_PlatformerGameMode()
+{
+	// set default pawn class to our Blueprinted character
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
+	if (PlayerPawnBPClass.Class != NULL)
+	{
+		DefaultPawnClass = PlayerPawnBPClass.Class;
+	}
+}

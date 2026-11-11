@@ -1,3 +1,36 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c384352e7357dc6c4de51bda78eb6bd37759bffcc41b303d5cfe2752176ed4c9
-size 687
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "RotationActor.generated.h"
+
+UCLASS()
+class A01_PLATFORMER_API ARotationActor : public AActor
+{
+	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(EditAnywhere)
+    UStaticMeshComponent* PlatformMesh;
+
+	UPROPERTY(EditAnywhere)
+    float RotationSpeed;
+
+	float CurrentRotation;
+	
+public:	
+	// Sets default values for this actor's properties
+	ARotationActor();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+};

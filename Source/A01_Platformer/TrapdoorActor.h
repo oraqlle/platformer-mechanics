@@ -1,3 +1,61 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a6fef58652fc7a229d4527f6ddc8e727d7e5c1a9df3cb612c9eacdcd403c7797
-size 1196
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "Components/BoxComponent.h"
+#include "TrapdoorActor.generated.h"
+
+UCLASS()
+class A01_PLATFORMER_API ATrapdoorActor : public AActor
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere)
+    UStaticMeshComponent* TrapdoorMesh;
+	
+    UPROPERTY(EditAnywhere)
+    UBoxComponent* TrapdoorTrigger;
+
+	UPROPERTY(EditAnywhere)
+    float MaxRotation;
+
+	UPROPERTY(EditAnywhere)
+    float TrapdoorDelay;
+
+	UPROPERTY(EditAnywhere)
+    float RotationSpeed;
+
+	float CurrentRotation;
+
+	FTimerHandle DropTimerHandle;
+
+	bool bIsTrapdoorOpen;
+	
+public:	
+	// Sets default values for this actor's properties
+	ATrapdoorActor();
+
+	UFUNCTION()
+	void OnTrapdoorTrigger(
+		UPrimitiveComponent* HitComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		FHitResult const& SweepResult);
+
+	UFUNCTION()
+	void OnTrapdoorActivate();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+};
